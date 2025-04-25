@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  chat-server-gui:
+    build:
+      context: .
+      dockerfile: Dockerfile_server
+    container_name: chat-server-gui
+    ports:
+      - "5800:5800" # VNC
+      - "5900:5900" # VNC
+    volumes:
+      - ./chat:/opt/chat
+    environment:
+      - KEEP_APP_RUNNING=1
+    restart: always
+
+  chat-client-gui:
+    build:
+      context: .
+      dockerfile: Dockerfile_client
+    container_name: chat-client-gui
+    ports:
+      - "5801:5800" # VNC
+      - "5901:5900" # VNC
+    volumes:
+      - ./chat:/opt/chat
+    environment:
+      - KEEP_APP_RUNNING=1
+    restart: always
