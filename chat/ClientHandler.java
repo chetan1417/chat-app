@@ -40,4 +40,11 @@ public class ClientHandler extends Thread {
             client.println(message);
         }
     }
+
+    // New method added for ServerGUI to broadcast system messages
+    public static void broadcastFromServer(String message) {
+        for (PrintWriter client : clients) {
+            client.println(message);
+        }
+    }
 }
