@@ -8,7 +8,8 @@ public class UserManager {
     private static final String CLIENT_FILE = "chat/Credentials.txt";
 
     public boolean serverExists() {
-        return new File(SERVER_FILE).exists();
+        File file = new File(SERVER_FILE);
+        return file.exists() && file.length() > 0;
     }
 
     public void registerServer(String id, String password, String phone) {
