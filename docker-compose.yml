@@ -7,29 +7,16 @@ services:
     environment:
       - DISPLAY=host.docker.internal:0
     volumes:
-      - chatdata:/app/chat   # <-- use named volume
-    networks:
-      - chat-network
-    restart: always
-
-  client1:
-    build: .
-    container_name: client1
-    environment:
-      - DISPLAY=host.docker.internal:0
-    entrypoint: ["java", "chat.ClientGUI"]
-    volumes:
       - chatdata:/app/chat
     networks:
       - chat-network
     restart: always
 
-  client2:
+  client:
     build: .
-    container_name: client2
     environment:
       - DISPLAY=host.docker.internal:0
-    entrypoint: ["java", "chat.ClientGUI"]
+    entrypoint: [ "java", "chat.ClientGUI" ]
     volumes:
       - chatdata:/app/chat
     networks:
