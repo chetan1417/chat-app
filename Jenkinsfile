@@ -1,23 +1,43 @@
 pipeline {
     agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+        IMAGE_NAME = 'chetan1417/chat-application'
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout Code') {
             steps {
-                echo 'Building the project...'
-                // Add your build steps here (e.g., Maven, Gradle, Docker build)
+                git branch: 'main', url: 'https://github.com/yourusername/your-repo.git'
             }
         }
-        stage('Test') {
+
+        stage('Build Docker Image') {
             steps {
-                echo 'Running tests...'
-                // Add your test steps here (e.g., run unit tests, etc.)
+                sh 'docker build -t $IMAGE_NAME:latest .'
             }
         }
-        stage('Deploy') {
+
+        stage('Login to Docker Hub') {
             steps {
-                echo 'Deploying the project...'
-                // Add your deployment steps here (e.g., push Docker image, deploy to server, etc.)
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
+        }
+
+        stage('Push to Docker Hub') {
+            steps {
+                sh 'docker push $IMAGE_NAME:latest'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI/CD Pipeline Completed Successfully!'
+        }
+        failure {
+            echo 'Something went wrong!'
         }
     }
 }
