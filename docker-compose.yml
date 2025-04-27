@@ -1,30 +1,27 @@
-version: '3.8'
+version: "3"
 
 services:
-  chat-server-gui:
-    build:
-      context: .
-      dockerfile: Dockerfile_server
-    container_name: chat-server-gui
+  server:
+    build: .
     ports:
-      - "5800:5800" # VNC
-      - "5900:5900" # VNC
+      - "5000:5000" # Chat server port
+      - "5900:5900" # VNC port
     volumes:
-      - ./chat:/opt/chat
+      - ./chat:/opt/chat/chat # For persistent chat history and credentials
+    command: ["/bin/bash", "/opt/chat/startapp_server.sh"]
     environment:
-      - KEEP_APP_RUNNING=1
-    restart: always
+      - DISPLAY=:0
+    network_mode: "host"
 
-  chat-client-gui:
-    build:
-      context: .
-      dockerfile: Dockerfile_client
-    container_name: chat-client-gui
+  client:
+    build: .
     ports:
-      - "5801:5800" # VNC
-      - "5901:5900" # VNC
+      - "5901:5900" # VNC port for client
     volumes:
-      - ./chat:/opt/chat
+      - ./chat:/opt/chat/chat # For persistent chat history and credentials
+    command: ["/bin/bash", "/opt/chat/startapp_client.sh"]
     environment:
-      - KEEP_APP_RUNNING=1
-    restart: always
+      - DISPLAY=:0
+    network_mode: "host"
+    depends_on:
+      - server
