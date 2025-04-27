@@ -11,7 +11,7 @@ import java.util.Date;
 public class ServerGUI extends JFrame {
     private JTextArea chatArea;
     private JTextField messageField;
-    private JButton sendButton, createClientButton;
+    private JButton sendButton, createClientButton, clearHistoryButton;
     private ServerSocket serverSocket;
     private UserManager userManager;
     private PrintWriter writer;
@@ -58,7 +58,7 @@ public class ServerGUI extends JFrame {
             if (userManager.validateServer(idField.getText(), new String(passField.getPassword()))) {
                 setupGUI(idField.getText());
                 startServerSocket();
-                connectAsClient(idField.getText()); // Server connects to its own socket
+                connectAsClient(idField.getText());
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid credentials!");
                 loginServer();
@@ -88,7 +88,14 @@ public class ServerGUI extends JFrame {
         createClientButton = new JButton("Create Client Credentials");
         createClientButton.addActionListener(e -> openClientRegistration());
 
-        add(createClientButton, BorderLayout.NORTH);
+        clearHistoryButton = new JButton("Clear Chat History");
+        clearHistoryButton.addActionListener(e -> clearChatHistory());
+
+        JPanel topPanel = new JPanel(new GridLayout(1, 2));
+        topPanel.add(createClientButton);
+        topPanel.add(clearHistoryButton);
+
+        add(topPanel, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
 
         sendButton.addActionListener(e -> sendMessage(username));
@@ -153,7 +160,6 @@ public class ServerGUI extends JFrame {
                 String line;
                 try {
                     while ((line = reader.readLine()) != null) {
-                        // Skip echoed messages sent by the server itself
                         if (!line.contains("[FROM_SERVER]")) {
                             appendMessage(line, false);
                         }
@@ -192,8 +198,25 @@ public class ServerGUI extends JFrame {
         }
     }
 
+    private void clearChatHistory() {
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to clear all chat history?", "Confirm", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                PrintWriter writer = new PrintWriter(new FileWriter("chat/chat_history.txt"));
+                writer.close();
+                chatArea.setText("");
+                broadcastSystemMessage("[Server has cleared the chat history]");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void broadcastSystemMessage(String message) {
+        ClientHandler.broadcastFromServer("SERVER: " + message);
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(ServerGUI::new);
     }
-
 }
