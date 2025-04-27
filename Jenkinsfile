@@ -8,10 +8,11 @@ pipeline {
 
     stages {
         stage('Checkout Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/yourusername/your-repo.git'
-            }
-        }
+    steps {
+        git credentialsId: 'github-credentials', url: 'https://github.com/chetan/chat-app.git', branch: 'master'
+    }
+}
+
 
         stage('Build Docker Image') {
             steps {
