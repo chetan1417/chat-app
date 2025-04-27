@@ -129,7 +129,8 @@ public class ServerGUI extends JFrame {
                     new ClientHandler(clientSocket, this).start();
                 }
             } catch (IOException e) {
-                appendMessage("Error starting server socket.", false);
+                e.printStackTrace(); // <-- Add this line (important)
+                appendMessage("Error starting server socket: " + e.getMessage(), false);
             }
         }).start();
     }
@@ -199,7 +200,8 @@ public class ServerGUI extends JFrame {
     }
 
     private void clearChatHistory() {
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to clear all chat history?", "Confirm", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to clear all chat history?", "Confirm",
+                JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             try {
                 PrintWriter writer = new PrintWriter(new FileWriter("chat/chat_history.txt"));
