@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
     steps {
-        git credentialsId: 'github-credentials', url: 'https://github.com/chetan/chat-app.git', branch: 'master'
+        git credentialsId: 'github-credentials', url: 'https://github.com/chetan1417/chat-app', branch: 'master'
     }
 }
 
