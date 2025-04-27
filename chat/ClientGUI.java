@@ -72,7 +72,7 @@ public class ClientGUI extends JFrame {
 
     private void connectToServer() {
         try {
-            Socket socket = new Socket("localhost", 5000);
+            Socket socket = new Socket("server", 5000);
             writer = new PrintWriter(socket.getOutputStream(), true);
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
