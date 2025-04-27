@@ -1,30 +1,44 @@
 version: '3.8'
 
 services:
-  chat-server-gui:
-    build:
-      context: .
-      dockerfile: Dockerfile_server
-    container_name: chat-server-gui
-    ports:
-      - "5800:5800" # VNC
-      - "5900:5900" # VNC
-    volumes:
-      - ./chat:/opt/chat
+  server:
+    build: .
+    container_name: server
     environment:
-      - KEEP_APP_RUNNING=1
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      - chatdata:/app/chat   # <-- use named volume
+    networks:
+      - chat-network
     restart: always
 
-  chat-client-gui:
-    build:
-      context: .
-      dockerfile: Dockerfile_client
-    container_name: chat-client-gui
-    ports:
-      - "5801:5800" # VNC
-      - "5901:5900" # VNC
-    volumes:
-      - ./chat:/opt/chat
+  client1:
+    build: .
+    container_name: client1
     environment:
-      - KEEP_APP_RUNNING=1
+      - DISPLAY=host.docker.internal:0
+    entrypoint: ["java", "chat.ClientGUI"]
+    volumes:
+      - chatdata:/app/chat
+    networks:
+      - chat-network
     restart: always
+
+  client2:
+    build: .
+    container_name: client2
+    environment:
+      - DISPLAY=host.docker.internal:0
+    entrypoint: ["java", "chat.ClientGUI"]
+    volumes:
+      - chatdata:/app/chat
+    networks:
+      - chat-network
+    restart: always
+
+networks:
+  chat-network:
+    driver: bridge
+
+volumes:
+  chatdata:
