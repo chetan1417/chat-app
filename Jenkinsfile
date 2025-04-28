@@ -3,7 +3,6 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub') // Using the Jenkins credential
-        IMAGE_NAME = 'chetananeja/chat-application' // Your Docker Hub repository
     }
 
     stages {
@@ -17,7 +16,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                bat 'docker build -t $IMAGE_NAME .' // Builds the image using the repository name
+                bat 'docker build -t chetananeja/chat-application .' // Manually set the image name here
             }
         }
 
@@ -30,7 +29,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                bat 'docker push %IMAGE_NAME%' // Pushes the image to your Docker Hub repository
+                bat 'docker push chetananeja/chat-application' // Manually set the image name here
             }
         }
     }
