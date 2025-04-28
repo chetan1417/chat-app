@@ -18,22 +18,21 @@ pipeline {
 
 
         stage('Build Docker Image') {
-            steps {
-                sh 'docker build -t $IMAGE_NAME:latest .'
-            }
-        }
+    steps {
+        bat 'docker build -t your-image-name .'
+    }
+}
+stage('Login to Docker Hub') {
+    steps {
+        bat 'docker login -u your-username -p your-password'
+    }
+}
+stage('Push to Docker Hub') {
+    steps {
+        bat 'docker push your-image-name'
+    }
+}
 
-        stage('Login to Docker Hub') {
-            steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
-        }
-
-        stage('Push to Docker Hub') {
-            steps {
-                sh 'docker push $IMAGE_NAME:latest'
-            }
-        }
     }
 
     post {
