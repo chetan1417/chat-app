@@ -30,7 +30,7 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                bat 'docker push $IMAGE_NAME' // Pushes the image to your Docker Hub repository
+                bat 'docker push %IMAGE_NAME%' // Pushes the image to your Docker Hub repository
             }
         }
     }
