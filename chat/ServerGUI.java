@@ -48,6 +48,7 @@ public class ServerGUI extends JFrame {
     private void loginServer() {
         JTextField idField = new JTextField();
         JPasswordField passField = new JPasswordField();
+        JTextField phoneField = new JTextField();
         Object[] message = {
                 "Server ID:", idField,
                 "Password:", passField
