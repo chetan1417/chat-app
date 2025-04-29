@@ -22,18 +22,15 @@ public class UserManager {
         }
     }
 
-    public boolean validateServer(String id, String password, String phone) {
-    try (BufferedReader reader = new BufferedReader(new FileReader(SERVER_FILE))) {
-        String storedId = reader.readLine();
-        String storedPass = reader.readLine();
-      //  String storedPhone = reader.readLine();
-        return storedId.equals(id) && storedPass.equals(password) ;
-    } catch (IOException e) {
-        e.printStackTrace();
+    public boolean validateServer(String id, String password) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(SERVER_FILE))) {
+            String storedId = reader.readLine();
+            String storedPass = reader.readLine();
+            return storedId.equals(id) && storedPass.equals(password);
+        } catch (IOException e) {
+            return false;
+        }
     }
-    return false;
-}
-
 
     public void registerClient(String username, String password) {
         try (PrintWriter out = new PrintWriter(new FileWriter(CLIENT_FILE, true))) {
