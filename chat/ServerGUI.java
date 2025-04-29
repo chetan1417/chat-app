@@ -48,11 +48,11 @@ public class ServerGUI extends JFrame {
     private void loginServer() {
         JTextField idField = new JTextField();
         JPasswordField passField = new JPasswordField();
-        JTextField phoneField = new JTextField();
+        //JTextField phoneField = new JTextField();
         Object[] message = {
                 "Server ID:", idField,
                 "Password:", passField
-            "Phone Number:", phoneField
+            
         };
 
         int option = JOptionPane.showConfirmDialog(this, message, "Server Login", JOptionPane.OK_CANCEL_OPTION);
