@@ -11,7 +11,7 @@ import java.util.Date;
 public class ServerGUI extends JFrame {
     private JTextArea chatArea;
     private JTextField messageField;
-    private JButton sendButton, createClientButton, clearHistoryButton;
+    private JButton sendButton, createClientButton;
     private ServerSocket serverSocket;
     private UserManager userManager;
     private PrintWriter writer;
@@ -51,7 +51,6 @@ public class ServerGUI extends JFrame {
         Object[] message = {
                 "Server ID:", idField,
                 "Password:", passField
-                
         };
 
         int option = JOptionPane.showConfirmDialog(this, message, "Server Login", JOptionPane.OK_CANCEL_OPTION);
@@ -89,12 +88,8 @@ public class ServerGUI extends JFrame {
         createClientButton = new JButton("Create Client Credentials");
         createClientButton.addActionListener(e -> openClientRegistration());
 
-        clearHistoryButton = new JButton("Clear Chat History");
-        clearHistoryButton.addActionListener(e -> clearChatHistory());
-
-        JPanel topPanel = new JPanel(new GridLayout(1, 2));
+        JPanel topPanel = new JPanel(new GridLayout(1, 1));
         topPanel.add(createClientButton);
-        topPanel.add(clearHistoryButton);
 
         add(topPanel, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.SOUTH);
@@ -130,7 +125,7 @@ public class ServerGUI extends JFrame {
                     new ClientHandler(clientSocket, this).start();
                 }
             } catch (IOException e) {
-                e.printStackTrace(); // <-- Add this line (important)
+                e.printStackTrace();
                 appendMessage("Error starting server socket: " + e.getMessage(), false);
             }
         }).start();
@@ -198,25 +193,6 @@ public class ServerGUI extends JFrame {
             appendMessage(formatted, true);
             messageField.setText("");
         }
-    }
-
-    private void clearChatHistory() {
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to clear all chat history?", "Confirm",
-                JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            try {
-                PrintWriter writer = new PrintWriter(new FileWriter("chat/chat_history.txt"));
-                writer.close();
-                chatArea.setText("");
-                broadcastSystemMessage("[Server has cleared the chat history]");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void broadcastSystemMessage(String message) {
-        ClientHandler.broadcastFromServer("SERVER: " + message);
     }
 
     public static void main(String[] args) {
