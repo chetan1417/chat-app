@@ -33,7 +33,7 @@ public class ServerGUI extends JFrame {
         Object[] message = {
                 "Server ID:", idField,
                 "Password:", passField,
-                //"Phone Number:", phoneField
+                "Phone Number:", phoneField
         };
 
         int option = JOptionPane.showConfirmDialog(this, message, "Register Server", JOptionPane.OK_CANCEL_OPTION);
@@ -51,6 +51,7 @@ public class ServerGUI extends JFrame {
         Object[] message = {
                 "Server ID:", idField,
                 "Password:", passField
+            "Phone Number:", phoneField
         };
 
         int option = JOptionPane.showConfirmDialog(this, message, "Server Login", JOptionPane.OK_CANCEL_OPTION);
