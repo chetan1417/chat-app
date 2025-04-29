@@ -27,7 +27,7 @@ public class UserManager {
             String storedId = reader.readLine();
             String storedPass = reader.readLine();
             String storedphone = reader.readLine();
-            return storedId.equals(id) && storedPass.equals(password) && storedphone.equals(phoneNumber);
+            return storedId.equals(id) && storedPass.equals(password) && storedphone.equals(phone);
         } catch (IOException e) {
             return false;
         }
