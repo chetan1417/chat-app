@@ -26,7 +26,8 @@ public class UserManager {
         try (BufferedReader reader = new BufferedReader(new FileReader(SERVER_FILE))) {
             String storedId = reader.readLine();
             String storedPass = reader.readLine();
-            return storedId.equals(id) && storedPass.equals(password);
+            String storedphone = reader.readLine();
+            return storedId.equals(id) && storedPass.equals(password) && storedphone.equals(phoneNumber);
         } catch (IOException e) {
             return false;
         }
